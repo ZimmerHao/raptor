@@ -1,0 +1,23 @@
+# PyCharm
+.idea
+
+# pyc file
+*.pyc
+
+# virtualenv
+venv/
+
+# all local files
+*local*
+
+# npm packages just for develop
+node_modules
+
+# logs
+logs/
+
+# sass-cache
+.sass-cache/
+
+# DS_Store
+*.DS_Store
