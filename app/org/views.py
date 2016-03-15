@@ -99,7 +99,7 @@ class OrgListHandler(Resource):
             org_list.append(org_item)
 
         data = dict()
-        data['companies'] = org_list
+        data['orgs'] = org_list
         if org_models.has_next:
             data['next_num'] = org_models.next_num
         if org_models.has_prev:
@@ -125,7 +125,7 @@ class OrgSearchHandler(Resource):
         return data
 
 
-class IndustryClassHandler(Resource):
+class IndustryClassSearchHandler(Resource):
     def get(self):
         industry_class_name = request.args.get('q', '')
         industry_class_models = IndustryClass.query.\
@@ -368,7 +368,7 @@ api.add_resource(OrgListHandler, '/orgs', endpoint='org_list')
 api.add_resource(OrgHandler, '/orgs/<int:oid>', endpoint='org')
 api.add_resource(OrgSearchHandler, '/orgs/search', endpoint='org_search')
 
-api.add_resource(IndustryClassHandler, '/industries/search', endpoint='industry_search')
+api.add_resource(IndustryClassSearchHandler, '/industries/search', endpoint='industry_search')
 
 api.add_resource(OrgTagHandler, '/orgs/<int:oid>/tags',
                                 '/orgs/<int:oid>/tags/<int:tid>', endpoint='org_tag')
