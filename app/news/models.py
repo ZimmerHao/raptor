@@ -6,6 +6,7 @@ from app import db
 from app.common.models import Organization
 from app.common.constants import DEFAULT_RANK, DEFAULT_DATA_LOADER
 
+
 class NewsSource(db.Model):
     __table_args__ = {'schema': 'warehouse'}
     __tablename__ = 'news_source'
@@ -34,7 +35,7 @@ class NewsSource(db.Model):
 
 
 class OrgNewsMap(db.Model):
-    __table_args__ = {'schema': 'xboard'}
+    __table_args__ = {'schema': 'haojm'}
     __tablename__ = 'org_news_map'
 
     org_news_map_key = db.Column(db.Integer, primary_key=True)
@@ -80,7 +81,7 @@ class NewsCategory(db.Model):
 
 
 class OrgNewsCategory(db.Model):
-    __table_args__ = {'schema': 'xboard'}
+    __table_args__ = {'schema': 'haojm'}
     __tablename__ = 'org_news_category'
 
     org_news_category_key = db.Column(db.Integer, primary_key=True)
