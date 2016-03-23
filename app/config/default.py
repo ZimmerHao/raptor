@@ -10,6 +10,11 @@ class Config(object):
 
     }
 
+    SESSION_OPTS = {
+        'session.type': 'redis',
+        'session.url': '127.0.0.1:11211',
+    }
+
 
 
 

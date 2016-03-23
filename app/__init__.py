@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
 
-from flask import Flask
+from flask import Flask, session
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from config import load_config
 from logging.config import dictConfig
 from app.common.hbase import HbaseClient
+from app.common.session import BeakerSessionInterface
+from beaker.middleware import SessionMiddleware
 
 
 db = SQLAlchemy()
@@ -21,6 +23,8 @@ def create_app():
     register_blueprints(app)
     register_logger(app)
     hbase_client.init_app(app)
+    init_session(app)
+    init_login_manager(app)
 
     return app
 
@@ -42,6 +46,11 @@ def register_blueprints(app):
 
 def register_logger(app):
     dictConfig(app.config.get('LOGGING'))
+
+
+def init_session(app):
+    app.wsgi_app = SessionMiddleware(app.wsgi_app, app.config.get('SESSION_OPTS'))
+    app.session_interface = BeakerSessionInterface()
 
 
 
