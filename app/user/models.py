@@ -9,16 +9,18 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    mobile = db.Column(db.String(120), unique=True)
+    email = db.Column(db.String(120), unique=True, nullable=True)
+    mobile = db.Column(db.String(120), unique=True, nullable=True)
     password = db.Column(db.String(80))
+    authenticated = db.Column(db.Boolean, default=False)
+    date_joined = db.Column(db.DateTime)
 
     def __init__(self, username, email):
         self.username = username
         self.email = email
 
     def is_authenticated(self):
-        return True
+        return self.authenticated
 
     def is_active(self):
         return True

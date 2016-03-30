@@ -55,7 +55,7 @@ class Logout(Resource):
 
 class Register(Resource):
     def post(self):
-        user = User(request.form['username'] , request.form['password'])
+        user = User(request.form['username'], request.form['password'])
         db.session.add(user)
         db.session.commit()
         return {"email sent"}
