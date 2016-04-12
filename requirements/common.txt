@@ -8,3 +8,4 @@ Flask-Login==0.3.2
 thrift==0.9.3
 psycopg2==2.6.1
 beaker==1.8.0
+flask-principal==0.4.0

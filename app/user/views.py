@@ -2,9 +2,10 @@
 
 import re
 
-from flask import request, redirect
+from flask import request, redirect, current_app, session
 from flask_restful import Resource
 from flask.ext.login import current_user, logout_user, login_user, login_required
+from flask.ext.principal import identity_changed, Identity, RoleNeed, UserNeed
 
 from app.user.models import User
 from app import login_manager, db
@@ -50,6 +51,8 @@ class Logout(Resource):
         db.session.add(user)
         db.session.commit()
         logout_user()
+
+        identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
         return redirect('/')
 
 

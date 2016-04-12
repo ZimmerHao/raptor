@@ -8,6 +8,7 @@ from logging.config import dictConfig
 from app.common.hbase import HbaseClient
 from app.common.session import BeakerSessionInterface
 from beaker.middleware import SessionMiddleware
+from flask.ext.principal import Principal
 
 
 db = SQLAlchemy()
