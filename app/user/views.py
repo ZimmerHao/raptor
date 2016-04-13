@@ -5,7 +5,7 @@ import re
 from flask import request, redirect, current_app, session
 from flask_restful import Resource
 from flask.ext.login import current_user, logout_user, login_user, login_required
-from flask.ext.principal import identity_changed, Identity, RoleNeed, UserNeed
+from flask.ext.principal import identity_changed, Identity, RoleNeed, UserNeed, AnonymousIdentity
 
 from app.user.models import User
 from app import login_manager, db
@@ -14,7 +14,7 @@ from app.common.error import ApiError
 
 
 @login_manager.user_loader
-def user_loader(user_id):
+def load_user(user_id):
     """Given *user_id*, return the associated User object.
 
     :param unicode user_id: user_id (email) user to retrieve
@@ -40,6 +40,9 @@ class Login(Resource):
         if not u:
             return ApiError(40001)
         login_user(u)
+        # Tell Flask-Principal the identity changed
+        identity_changed.send(current_app._get_current_object(),
+                              identity=Identity(u.id))
         return redirect('/')
 
 
@@ -51,20 +54,30 @@ class Logout(Resource):
         db.session.add(user)
         db.session.commit()
         logout_user()
-
-        identity_changed.send(current_app._get_current_object(), identity=AnonymousIdentity())
+        identity_changed.send(current_app._get_current_object(),
+                              identity=AnonymousIdentity())
         return redirect('/')
 
 
 class Register(Resource):
     def post(self):
-        user = User(request.form['username'], request.form['password'])
-        db.session.add(user)
+        username = request.form.get('username', '')
+        email = request.form.get('email', '')
+        password = request.form.get('password', '')
+
+        if not (username and email and password):
+            return ApiError(40001)
+        u = User(username=username, email=email, password=password)
+        db.session.add(u)
         db.session.commit()
-        return {"email sent"}
+        identity_changed.send(current_app._get_current_object(),
+                              identity=Identity(u.id))
+
+        return redirect('/')
 
 
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
+api.add_resource(Register, '/join', endpoint='join')
 
 

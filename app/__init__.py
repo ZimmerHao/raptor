@@ -20,6 +20,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(load_config())
 
+    Principal(app)
     db.init_app(app)
     register_blueprints(app)
     register_logger(app)
