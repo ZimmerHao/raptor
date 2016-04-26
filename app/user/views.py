@@ -5,7 +5,7 @@ import re
 from flask import request, redirect, current_app, session
 from flask_restful import Resource
 from flask.ext.login import current_user, logout_user, login_user, login_required
-from flask.ext.principal import identity_changed, Identity, RoleNeed, UserNeed, AnonymousIdentity
+from flask.ext.principal import identity_changed, Identity, RoleNeed, UserNeed, AnonymousIdentity, ActionNeed, Permission
 
 from app.user.models import User
 from app import login_manager, db

@@ -5,6 +5,18 @@ import datetime
 from app import db
 
 
+roles_users = db.Table(
+    'roles_users',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('roles.id')))
+
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+
 class User(db.Model):
     __table_args__ = {"schema": "haojm"}
     __tablename__ = 'user'
@@ -17,6 +29,8 @@ class User(db.Model):
     authenticated = db.Column(db.Boolean, default=False)
     date_joined = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True)
+
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
     def __init__(self, username=None, email=None, mobile=None, password=None, authenticated=True,
                  date_joined=None, is_active=True):
