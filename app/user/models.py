@@ -5,10 +5,10 @@ import datetime
 from app import db
 
 
-roles_users = db.Table(
-    'roles_users',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-    db.Column('role_id', db.Integer, db.ForeignKey('roles.id')))
+roles_users = db.Table('roles_users',
+                       db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                       db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+                       schema='haojm')
 
 
 class Role(db.Model):
