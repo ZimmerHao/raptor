@@ -46,6 +46,9 @@ def register_blueprints(app):
     from org import org_blueprint
     app.register_blueprint(org_blueprint, url_prefix='/v1.0')
 
+    from tools import tools_blueprint
+    app.register_blueprint(tools_blueprint, url_prefix='/v1.0')
+
 
 def register_logger(app):
     dictConfig(app.config.get('LOGGING'))
